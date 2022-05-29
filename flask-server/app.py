@@ -6,6 +6,7 @@ from google.oauth2 import id_token
 import pathlib
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+from FinalCode import recoms
 
 
 app = Flask(__name__,static_url_path='', static_folder='frontend/build')
@@ -79,5 +80,25 @@ def protected_area():
     return "hello world <a href='/logout'><button>Logout</button></a>"
 
 
+@app.route("/members")
+def members():
+    return {"members":["Member1", "Member2","Member3"]}
+
+# @app.route("/get_recom", methods=["POST"])
+# def getRecom():
+#     # user_id = request.form.get("user_id")
+#     #user id is hardcoded to any random number. the random number should exist as a userid in the database
+#     data = recoms(5)
+#     return {data}
+
+
+@app.route("/get_recom")
+def getRecom():
+    #user id is hardcoded to any random number. the random number should exist as a userid in the database
+    data = recoms(5)
+    return {data}
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
