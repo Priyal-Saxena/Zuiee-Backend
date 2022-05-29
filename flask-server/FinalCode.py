@@ -601,10 +601,11 @@ def recoms(u):
     "frndRecom" : frndRecom(u),
     "topRatedRecom" : topRatedRecom(u),
     "topVisitedRecom": topVisitedRecom(u),
-    "genRecom" : genRecom(u),
     "Frnds":Frnds(u),
     }
     return data
 
 
-
+def genrecom(u):
+    data={"genRecom" : genRecom(u),}
+    return data

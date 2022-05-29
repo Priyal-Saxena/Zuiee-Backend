@@ -7,6 +7,7 @@ import pathlib
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
 from FinalCode import recoms
+from FinalCode import genrecom
 
 
 app = Flask(__name__,static_url_path='', static_folder='frontend/build')
@@ -96,6 +97,12 @@ def members():
 def getRecom():
     #user id is hardcoded to any random number. the random number should exist as a userid in the database
     recomLists = recoms(5)
+    return {recomLists}
+
+@app.route("/get_genRecom")
+def getGenrecom():
+    #user id is hardcoded to any random number. the random number should exist as a userid in the database
+    recomLists = genrecom(5)
     return {recomLists}
 
 
