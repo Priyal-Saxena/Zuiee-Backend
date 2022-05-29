@@ -1,4 +1,4 @@
-Flask==1.1.2
+Flask==2.1
 geopy==2.2.0
 google_auth_oauthlib==0.4.2
 matplotlib==3.5.2
@@ -7,4 +7,4 @@ pandas==1.4.2
 pip==22.0.4
 protobuf==4.21.1
 requests==2.27.1
-surprise==0.1
+# surprise==0.1

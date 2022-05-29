@@ -20,11 +20,12 @@
 # 
 
 # In[ ]:
+# from IPython import get_ipython
 
 
 # installing all the dependencies
 import sys
-get_ipython().system('{sys.executable} -m pip install geopy')
+# pip install geopy
 
 
 # In[ ]:
@@ -34,7 +35,6 @@ get_ipython().system('{sys.executable} -m pip install geopy')
 
 
 # In[ ]:
-
 
 # importing all the important libraries
 import pandas as pd
@@ -276,89 +276,89 @@ df_user_POI = df_frequencies.groupby('userid').placeid.apply(list).reset_index(n
 # In[ ]:
 
 
-def distance(pi, pj):
+# def distance(pi, pj):
     
-    # retrieve first place latitude and longitude
-    lat0 = df_locations[df_locations.id == pi].lat.values
-    lng0 = df_locations[df_locations.id == pi].lng.values
+#     # retrieve first place latitude and longitude
+#     lat0 = df_locations[df_locations.id == pi].lat.values
+#     lng0 = df_locations[df_locations.id == pi].lng.values
 
-    # retrieve second place latitude and longitude
-    lat1 = df_locations[df_locations.id == pj].lat.values
-    lng1 = df_locations[df_locations.id == pj].lng.values
+#     # retrieve second place latitude and longitude
+#     lat1 = df_locations[df_locations.id == pj].lat.values
+#     lng1 = df_locations[df_locations.id == pj].lng.values
 
-    # calculate distance in km using the geopy library
+#     # calculate distance in km using the geopy library
 
-    return geodesic((lat0,lng0), (lat1,lng1)).km
+#     return geodesic((lat0,lng0), (lat1,lng1)).km
 
-def distance_pair_list(Lu):
-    # collect all the combinations of pairs of places already visited
-    if len(Lu) <= 1 :
-        pairs = []
-    else:
-        pairs = list(combinations(Lu,2))
+# def distance_pair_list(Lu):
+#     # collect all the combinations of pairs of places already visited
+#     if len(Lu) <= 1 :
+#         pairs = []
+#     else:
+#         pairs = list(combinations(Lu,2))
         
     
-    dist_list = []
+#     dist_list = []
     
-    # calculate the distance between each pair of squares
-    if pairs != [] :
-        for pair in pairs :
-            dist_list.append(distance(pair[0], pair[1]))
-    return dist_list
+#     # calculate the distance between each pair of squares
+#     if pairs != [] :
+#         for pair in pairs :
+#             dist_list.append(distance(pair[0], pair[1]))
+#     return dist_list
 
 
-# * Use $D_u$ to calculate the density $f_u$ of any distance
+# # * Use $D_u$ to calculate the density $f_u$ of any distance
 
-# The smoothing parameter $h = 1.06\hat{\sigma}n^{-1/5}$, where $n$ is the number of POIs present in $L_u$ and $\hat{\sigma}$ is the standard deviation of $D_u$. Implement the expression $\hat{f}_u$ in a *density()* function.
+# # The smoothing parameter $h = 1.06\hat{\sigma}n^{-1/5}$, where $n$ is the number of POIs present in $L_u$ and $\hat{\sigma}$ is the standard deviation of $D_u$. Implement the expression $\hat{f}_u$ in a *density()* function.
 
-# In[ ]:
-
-
-def k_gaussian(x):
-    return (1/np.sqrt(2*np.pi))*np.exp(-x**2/2)
-
-def density(Du, dij, h):
-    D2 = list(map(lambda x : (dij-x)/h,Du))
-    density = 1/(len(Du)*h)*sum(list(map(k_gaussian,D2)))
-    return density
+# # In[ ]:
 
 
-# * The density $\hat{f}_u$ is used to estimate the probability that a POI $p_i$ not visited by a user $u$ matches the geographic preferences of $u$ given his visit history. In order to obtain this probability, we calculate the distance between $p_i$ and each of the POIs of the list $L_u$ and we then estimate the probability of each of these distances passing through $\hat{f}_u$.
+# def k_gaussian(x):
+#     return (1/np.sqrt(2*np.pi))*np.exp(-x**2/2)
 
-# * The final probability that a user $u$ visits a POI $p_i$ is obtained as follows:
-# 
-# **P**(p_i \| L_u) represents the probability that the user $u$ visits the POI $p_i$ given the geographical criterion. Implement the above equation in a *geo_proba()* function which takes as input the list $L_u$ and a POI, and which returns the probability of visiting this POI.
+# def density(Du, dij, h):
+#     D2 = list(map(lambda x : (dij-x)/h,Du))
+#     density = 1/(len(Du)*h)*sum(list(map(k_gaussian,D2)))
+#     return density
 
-# In[ ]:
+
+# # * The density $\hat{f}_u$ is used to estimate the probability that a POI $p_i$ not visited by a user $u$ matches the geographic preferences of $u$ given his visit history. In order to obtain this probability, we calculate the distance between $p_i$ and each of the POIs of the list $L_u$ and we then estimate the probability of each of these distances passing through $\hat{f}_u$.
+
+# # * The final probability that a user $u$ visits a POI $p_i$ is obtained as follows:
+# # 
+# # **P**(p_i \| L_u) represents the probability that the user $u$ visits the POI $p_i$ given the geographical criterion. Implement the above equation in a *geo_proba()* function which takes as input the list $L_u$ and a POI, and which returns the probability of visiting this POI.
+
+# # In[ ]:
 
 
-def geo_proba(Lu, pi, Du):
-    # pi= POI not visited by the user
-    # Lu = list of placeid of places visited by the user
-    # d is the list of distances btw pi and the places already visited by the user
-    # Du is the distance between each pair of places already visited
-    d = []
+# def geo_proba(Lu, pi, Du):
+#     # pi= POI not visited by the user
+#     # Lu = list of placeid of places visited by the user
+#     # d is the list of distances btw pi and the places already visited by the user
+#     # Du is the distance between each pair of places already visited
+#     d = []
     
-    # retrieve the longitude and latitude of the candidate place to recommend
-    lat_i = df_locations[df_locations.id==pi].lat.values[0]
-    long_i = df_locations[df_locations.id == pi].lng.values[0]
+#     # retrieve the longitude and latitude of the candidate place to recommend
+#     lat_i = df_locations[df_locations.id==pi].lat.values[0]
+#     long_i = df_locations[df_locations.id == pi].lng.values[0]
     
-    # calculate all the distances between the candidate place to recommend and each place already visited in the Lu list
-    for l in Lu :
-        long_j = df_locations[df_locations.id == l].lng.values[0]
-        lat_j = df_locations[df_locations.id == l].lat.values[0]
-        d.append(geodesic((lat_j,long_j), (lat_i,long_i)).km)
+#     # calculate all the distances between the candidate place to recommend and each place already visited in the Lu list
+#     for l in Lu :
+#         long_j = df_locations[df_locations.id == l].lng.values[0]
+#         lat_j = df_locations[df_locations.id == l].lat.values[0]
+#         d.append(geodesic((lat_j,long_j), (lat_i,long_i)).km)
     
     
-    # calculate h
-    n = len(Lu)
-    sigma = np.std(Du) #used to compute the standard deviation along the specified axis. This function returns the standard deviation of the array elements. The square root of the average square deviation (computed from the mean), is known as the standard deviation.
-    h = 1.06*sigma*n**(-1/5)
+#     # calculate h
+#     n = len(Lu)
+#     sigma = np.std(Du) #used to compute the standard deviation along the specified axis. This function returns the standard deviation of the array elements. The square root of the average square deviation (computed from the mean), is known as the standard deviation.
+#     h = 1.06*sigma*n**(-1/5)
     
-    # calculate density
-    density_list = list(map(lambda x : density(Du, x, h),d))
+#     # calculate density
+#     density_list = list(map(lambda x : density(Du, x, h),d))
 
-    return np.mean(density_list)
+#     return np.mean(density_list)
 
 
 # 
@@ -572,10 +572,11 @@ def genRecom(u):
     
     for i in L_diff:
         if np.isnan(social_proba(u, i, Lu)):
-                score = geo_proba(Lu, i, Du)   #return value of social_proba is nan when user has no frnds
+                score = 0   #return value of social_proba is nan when user has no frnds
+                # score = geo_proba(Lu, i, Du)   #return value of social_proba is nan when user has no frnds
 
         else :
-            score = (geo_proba(Lu, i, Du) + social_proba(u, i, Lu)) / 2
+            score = (social_proba(u, i, Lu)) 
 #         print(score)
         df = pd.DataFrame({'score': [score], 'placeid': [i]})
         scores = pd.concat([scores, df])

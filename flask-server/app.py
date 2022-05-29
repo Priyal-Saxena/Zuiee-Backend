@@ -95,8 +95,8 @@ def members():
 @app.route("/get_recom")
 def getRecom():
     #user id is hardcoded to any random number. the random number should exist as a userid in the database
-    data = recoms(5)
-    return {data}
+    recomLists = recoms(5)
+    return {recomLists}
 
 
 if __name__ == "__main__":
