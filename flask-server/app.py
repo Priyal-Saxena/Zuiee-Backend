@@ -97,13 +97,15 @@ def members():
 def getRecom():
     #user id is hardcoded to any random number. the random number should exist as a userid in the database
     recomLists = recoms(5)
-    return {recomLists}
+    # recomLists = {'frndRecom': [13075, 598023, 1962468, 10411, 3398649, 1449501, 1574629, 1586130], 'topRatedRecom': [132708, 34087, 22535, 21228, 729536, 833946, 22292, 350860], 'topVisitedRecom': [22535, 184256, 9410, 11365, 906408, 164031, 34041, 96921], 'Frnds': [0, 2, 40, 41, 42, 44]}
+    return recomLists
 
 @app.route("/get_genRecom")
 def getGenrecom():
     #user id is hardcoded to any random number. the random number should exist as a userid in the database
     recomLists = genrecom(5)
-    return {recomLists}
+    # recomLists = {'genRecom': [1251458.0, 717104.0, 10411.0, 671812.0, 719023.0, 420315.0, 61648.0, 10259.0], }
+    return recomLists
 
 
 if __name__ == "__main__":
